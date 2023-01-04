@@ -385,17 +385,17 @@ QByteArray Dialog::ReadBEpointer(char *buffer, int &offset, bool x64)
     }
 }
 
-QByteArray Dialog::Readpointer(char *buffer, int &offset, bool x64)
+QByteArray Dialog::Readpointer(char *buffer, int &offset, bool /* x64 */)
 {
   return Readlong(buffer,offset);
 }
 
-QByteArray Dialog::ReadBEfloat(char *buffer, int &offset, bool x64)
+QByteArray Dialog::ReadBEfloat(char *buffer, int &offset, bool /* x64 */)
 {
  return ReadBElong(buffer,offset);
 }
 
-QByteArray Dialog::Readfloat(char *buffer, int &offset, bool x64)
+QByteArray Dialog::Readfloat(char *buffer, int &offset, bool /* x64 */)
 {
     return Readlong(buffer,offset);
 }

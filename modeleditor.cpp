@@ -2790,7 +2790,7 @@ else{
     }
 }
 
-void ModelEditor::on_data_changed(QStandardItem *itm)
+void ModelEditor::on_data_changed(QStandardItem */* itm */)
 {
 
     Make_VBO_Data();
@@ -2938,17 +2938,17 @@ QByteArray ModelEditor::ReadBEpointer(char *buffer, int &offset, bool x64)
     }
 }
 
-QByteArray ModelEditor::Readpointer(char *buffer, int &offset, bool x64)
+QByteArray ModelEditor::Readpointer(char *buffer, int &offset, bool /* x64 */)
 {
   return Readlong(buffer,offset);
 }
 
-QByteArray ModelEditor::ReadBEfloat(char *buffer, int &offset, bool x64)
+QByteArray ModelEditor::ReadBEfloat(char *buffer, int &offset, bool /* x64 */)
 {
  return ReadBElong(buffer,offset);
 }
 
-QByteArray ModelEditor::Readfloat(char *buffer, int &offset, bool x64)
+QByteArray ModelEditor::Readfloat(char *buffer, int &offset, bool /* x64 */)
 {
     return Readlong(buffer,offset);
 }
@@ -3803,10 +3803,10 @@ QVector4D bbmin = QVector4D(getAsFloat(Mbones.amatrices[12])+getAsFloat(Mbones.l
                             QGenericMatrix< 1, 3, float > vec3d(vecdat);
                             QGenericMatrix< 1, 4, float > vec4d =  MTFormat *vec3d;//vec3d *MTFormat; // <-logical but qt has it flipped why?
 
-                             VertexData vertex = { QVector4D(vec4d.data()[0],vec4d.data()[1],vec4d.data()[2],vec4d.data()[3]) ,
-                                               QVector4D(nx,ny,nz,0),
-                                              QVector4D(txu,txv,0.0,i)
-                                             };
+//                             VertexData vertex = { QVector4D(vec4d.data()[0],vec4d.data()[1],vec4d.data()[2],vec4d.data()[3]) ,
+//                                               QVector4D(nx,ny,nz,0),
+//                                              QVector4D(txu,txv,0.0,i)
+//                                             };
 
                              QList<QStandardItem*> row;
 
@@ -3882,7 +3882,7 @@ QVector4D bbmin = QVector4D(getAsFloat(Mbones.amatrices[12])+getAsFloat(Mbones.l
                    // start writing faces
 
 //                   std::vector< unsigned int > faces;
-                   unsigned int meshpartcount = 0;
+//                   unsigned int meshpartcount = 0;
                    QByteArray last = QByteArray::fromHex("FFFF");
                    QByteArray first = QByteArray::fromHex("FFFF");
                     long int facescounter =0;

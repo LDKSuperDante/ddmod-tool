@@ -51,8 +51,8 @@ MainWidget::MainWidget(QWidget *parent) :
     specular(0),
     normal(0),
     light(0),
-    angularSpeed(0),
-    m_distExp(-200000)
+    m_distExp(-200000),
+    angularSpeed(0)
 {
      setMinimumSize(400, 400);
 
@@ -191,6 +191,7 @@ float MainWidget::toFloat(QByteArray &data, bool bigEndian)
     return *f;
 }
 
+/*
 static void loadMatrix(const QMatrix4x4& m)
 {
     // static to prevent glLoadMatrixf to fail on certain drivers
@@ -200,6 +201,7 @@ static void loadMatrix(const QMatrix4x4& m)
         mat[index] = data[index];
     glLoadMatrixf(mat);
 }
+*/
 
 void MainWidget::updatetimer(){
 
@@ -422,7 +424,7 @@ void MainWidget::initTextures()
 
 }
 
-void MainWidget::gldebugmsg(const QOpenGLDebugMessage &debugMessage)
+void MainWidget::gldebugmsg(const QOpenGLDebugMessage &/* debugMessage */)
 {
   //  if (debugMessage.message()== "GL_INVALID_VALUE error generated. Index out of range.") return;
   // console->append( debugMessage.message());
