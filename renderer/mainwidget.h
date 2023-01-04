@@ -200,7 +200,6 @@ std::vector< std::vector<unsigned int> > faces;
 QTextEdit *console;
 
 int shadingmode;
-int rightmousedown;
 void DeleteFunctions() {delete(m_pFunctions); m_pFunctions = nullptr; qDebug() << "goodbye context!";  }
 
 QOpenGLFunctions_4_3_Core * m_pFunctions = nullptr;

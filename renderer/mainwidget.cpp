@@ -73,7 +73,6 @@ console->setWindowTitle("OpenGL Logger");
 console->show();
 */
 //this->showFullScreen();
- rightmousedown = 0;
  this->setContextMenuPolicy(Qt::CustomContextMenu);
  connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
          this, SLOT(ShowContextMenu(const QPoint &)));
@@ -232,11 +231,6 @@ QPointF MainWidget::pixelPosToViewPos(const QPointF& p)
 
 void MainWidget::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() & Qt::RightButton) { // for double right click menu
-        if(event->type() == QEvent::MouseButtonDblClick)
-            rightmousedown = 1;
-    }
-
     // Save mouse press position
     mousePressPosition = QVector2D(event->localPos());
 
@@ -483,10 +477,7 @@ void MainWidget::ShowContextMenu(const QPoint & pos)
     myMenu.addAction("Cancel");
 
     // ...
-    if(rightmousedown) { // double right click
-        myMenu.exec(globalPos);
-        rightmousedown = 0;
-    }
+    myMenu.exec(globalPos);
 }
 
 void MainWidget::onNewTextures(QString fileName)
