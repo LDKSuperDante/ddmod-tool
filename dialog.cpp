@@ -500,6 +500,7 @@ void Dialog::on_btnListen_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
           tr("Load Mod File"), "./",tr("MOD (*.mod)"));
+    if (fileName.isNull()) return;
     cmbAddress->insertItem(0,fileName);
     label_3->setText("File: " + fileName.section("/",-1,-1)); // just the file name
     open_file(fileName);
@@ -514,6 +515,7 @@ void Dialog::on_addr_changed(QString fileName)
 void Dialog::on_btnClose_clicked()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save Mod File"),"./",tr("MOD (*.mod)"));
+    if (fileName.isNull()) return;
 
     FILE *f = fopen(fileName.toLocal8Bit().constData(), "wb");
     if (f == NULL)

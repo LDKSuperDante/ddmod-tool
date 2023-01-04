@@ -695,6 +695,13 @@ emit this->newMeshPartSelection(selection);
     FILE *Filep;
 
     Filep = fopen(fileName.toLocal8Bit().constData(), "rb");
+    if (Filep == NULL)
+    {
+        QMessageBox msgBox;
+        msgBox.setText(QString("Error Reading File: \n").append(fileName.toLocal8Bit().constData()));
+        msgBox.exec();
+	return;
+    }
 
     long Fsize;
     char *buffer;
@@ -1697,6 +1704,7 @@ void ModelEditor::on_Open_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
           tr("Load Mod File"), "./",tr("MOD (*.mod)"));
+    if (fileName.isNull()) return;
     cmbAddress->insertItem(0,fileName);
     label_3->setText("File: " + fileName.section("/",-1,-1)); // just the file name
     open_file(fileName);
@@ -1711,6 +1719,7 @@ void ModelEditor::on_File_changed(QString fileName)
 void ModelEditor::on_Save_clicked()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save Mod File"),"./",tr("MOD (*.mod)"));
+    if (fileName.isNull()) return;
 
     FILE *f = fopen(fileName.toLocal8Bit().constData(), "wb");
     if (f == NULL)
