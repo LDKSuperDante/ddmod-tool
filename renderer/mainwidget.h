@@ -216,7 +216,6 @@ float mousex, mousey;
     int m_distExp;
     int m_frame;
     int dir;
-        QTimer *m_timer;
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);

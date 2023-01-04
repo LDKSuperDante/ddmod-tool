@@ -60,11 +60,6 @@ MainWidget::MainWidget(QWidget *parent) :
     m_trackBalls[1] = TrackBall(0.005f, QVector3D(0, 0, 1), TrackBall::Sphere);
     m_trackBalls[2] = TrackBall(0.0f, QVector3D(0, 1, 0), TrackBall::Plane);
 
-    m_timer = new QTimer(this);
-    m_timer->setInterval(1);
-    connect(m_timer, SIGNAL(timeout()), this, SLOT(update()));
-    m_timer->start();
-
     m_time.start();
 /*
 console = new QTextEdit;
