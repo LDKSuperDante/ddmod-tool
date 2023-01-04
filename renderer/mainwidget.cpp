@@ -311,8 +311,7 @@ void MainWidget::timerEvent(QTimerEvent *)
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
 
         // Update scene
-//        updateGL();
-        paintGL();
+        update();
     }
 }
 
@@ -629,8 +628,7 @@ QImage image04 =  image4.convertToFormat(QImage::Format_RGBA8888);
     geometries->lighttex = hantex;
     geometries->normtex = legtex;
    // geometries->ftex = ftex;
-    //updateGL();
-                paintGL();
+    update();
 }
 
 }
@@ -1017,8 +1015,7 @@ meshpartcount += Mparts.parts[i].vertexcount.toHex().toUInt(&ok,16);
                   //    geometries->indecies = indices;
 
                      geometries->initCubeGeometry();
-//    updateGL();
-                     paintGL();
+                     update();
 }
 
 void MainWidget::onNewDAPCMeshdata(MainWidget::MOD_Mesh_Parts &mesh)
@@ -1317,8 +1314,7 @@ bool ok;
                     //  geometries->indecies = indices;
 
                      geometries->initCubeGeometry();
-//    updateGL();
-                     paintGL();
+                     update();
 }
 
 void MainWidget::onNewMesh(std::vector<int> &rmodes, std::vector<std::vector<VertexData> > &arrverts, std::vector<std::vector<unsigned int> > &arrfaces)
@@ -1335,7 +1331,7 @@ void MainWidget::onNewMesh(std::vector<int> &rmodes, std::vector<std::vector<Ver
 
     geometries->initCubeGeometry();
 
-    paintGL();
+    update();
 }
 
 void MainWidget::onNewMeshselect(std::vector<int> &selection)
@@ -1347,7 +1343,7 @@ void MainWidget::onNewMeshselect(std::vector<int> &selection)
 //        qDebug() << selectedmeshes.at(i);
 //    }
 
-    paintGL();
+    update();
 }
 
 void MainWidget::setSmoothShading()
@@ -1358,7 +1354,7 @@ void MainWidget::setSmoothShading()
 
     qDebug() << pAction->data();
     shadingmode = 0;
-     paintGL();
+     update();
 }
 
 void MainWidget::setWireframeShading()
@@ -1368,25 +1364,25 @@ void MainWidget::setWireframeShading()
 
     qDebug() << pAction->data();
     shadingmode = 1;
-    paintGL();
+    update();
 }
 
 void MainWidget::setVertexShading()
 {
     shadingmode = 2;
-    paintGL();
+    update();
 }
 
 void MainWidget::setTriangleRendering()
 {
     geometries->rendermode = 0;
-     paintGL();
+     update();
 }
 
 void MainWidget::setTriangleStripRendering()
 {
     geometries->rendermode = 1;
-     paintGL();
+     update();
 }
 
 //! [4]
