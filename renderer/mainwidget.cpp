@@ -304,10 +304,10 @@ void MainWidget::timerEvent(QTimerEvent *)
     } else {
         // Update rotation
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
-
-        // Update scene
-        update();
     }
+
+    // Update scene
+    update();
 }
 
 void MainWidget::initializeGL()
@@ -381,7 +381,7 @@ msgBox.exec();
 
 
     // Use QBasicTimer because its faster than QTimer
-    timer.start(12, this);
+    timer.start(33, this);
 }
 
 //! [3]
@@ -623,7 +623,6 @@ QImage image04 =  image4.convertToFormat(QImage::Format_RGBA8888);
     geometries->lighttex = hantex;
     geometries->normtex = legtex;
    // geometries->ftex = ftex;
-    update();
 }
 
 }
@@ -1010,7 +1009,6 @@ meshpartcount += Mparts.parts[i].vertexcount.toHex().toUInt(&ok,16);
                   //    geometries->indecies = indices;
 
                      geometries->initCubeGeometry();
-                     update();
 }
 
 void MainWidget::onNewDAPCMeshdata(MainWidget::MOD_Mesh_Parts &mesh)
@@ -1309,7 +1307,6 @@ bool ok;
                     //  geometries->indecies = indices;
 
                      geometries->initCubeGeometry();
-                     update();
 }
 
 void MainWidget::onNewMesh(std::vector<int> &rmodes, std::vector<std::vector<VertexData> > &arrverts, std::vector<std::vector<unsigned int> > &arrfaces)
@@ -1325,8 +1322,6 @@ void MainWidget::onNewMesh(std::vector<int> &rmodes, std::vector<std::vector<Ver
      geometries->faces = arrfaces;
 
     geometries->initCubeGeometry();
-
-    update();
 }
 
 void MainWidget::onNewMeshselect(std::vector<int> &selection)
@@ -1337,8 +1332,6 @@ void MainWidget::onNewMeshselect(std::vector<int> &selection)
 //    for(int i=0;i<selectedmeshes.size();i++){
 //        qDebug() << selectedmeshes.at(i);
 //    }
-
-    update();
 }
 
 void MainWidget::setSmoothShading()
@@ -1349,7 +1342,6 @@ void MainWidget::setSmoothShading()
 
     qDebug() << pAction->data();
     shadingmode = 0;
-     update();
 }
 
 void MainWidget::setWireframeShading()
@@ -1359,25 +1351,21 @@ void MainWidget::setWireframeShading()
 
     qDebug() << pAction->data();
     shadingmode = 1;
-    update();
 }
 
 void MainWidget::setVertexShading()
 {
     shadingmode = 2;
-    update();
 }
 
 void MainWidget::setTriangleRendering()
 {
     geometries->rendermode = 0;
-     update();
 }
 
 void MainWidget::setTriangleStripRendering()
 {
     geometries->rendermode = 1;
-     update();
 }
 
 //! [4]
