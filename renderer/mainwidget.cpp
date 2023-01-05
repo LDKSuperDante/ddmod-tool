@@ -45,7 +45,7 @@
 #include <math.h>
 
 MainWidget::MainWidget(QWidget *parent) :
-    QOpenGLWidget(parent,0),//QGLFormat::defaultFormat(),this,shared),
+    QOpenGLWidget(parent),
     texture(0),
     diffuse(0),
     specular(0),
@@ -60,7 +60,6 @@ MainWidget::MainWidget(QWidget *parent) :
     m_trackBalls[1] = TrackBall(0.005f, QVector3D(0, 0, 1), TrackBall::Sphere);
     m_trackBalls[2] = TrackBall(0.0f, QVector3D(0, 1, 0), TrackBall::Plane);
 
-    m_time.start();
 /*
 console = new QTextEdit;
 console->clear();
@@ -255,8 +254,7 @@ if (event->buttons() & Qt::RightButton){ //Qt::MidButton) {
 
 void MainWidget::wheelEvent(QWheelEvent * event)
 {
-
-        m_distExp += event->delta();
+       m_distExp += event->angleDelta().y() * 50;
 
        // qDebug() << m_distExp;
 
@@ -296,7 +294,7 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *event)
 void MainWidget::timerEvent(QTimerEvent *)
 {
     // Decrease angular speed (friction)
-    angularSpeed *= 0.99;
+    angularSpeed *= 0.95;
 
     // Stop rotation when speed goes below threshold
     if (angularSpeed < 0.01) {

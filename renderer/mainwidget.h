@@ -210,7 +210,6 @@ float mousex, mousey;
            int time,time2,time3;
            int st,et,st2,et2,s1,s2,t1,t2;
     QPointF pixelPosToViewPos(const QPointF& p);
-    QTime m_time;
     int m_lastTime;
     int m_mouseEventTime;
     int m_distExp;
