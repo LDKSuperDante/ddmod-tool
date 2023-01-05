@@ -228,8 +228,6 @@ float mousex, mousey;
     void initTextures();
 
     QPointF mousePos;
-  //  Mat3f rotation;
-        QQuaternion rotation;
     Vec3f translation;
     Mat4f modelViewMatrix;
     Mat4f projectionMatrix;
@@ -271,9 +269,6 @@ private:
     QMatrix4x4 projection;
 
     QVector2D mousePressPosition;
-    QVector3D rotationAxis;
-    qreal angularSpeed;
-    //QQuaternion rotation;
     QRgb *m_color;
     QRgb cl_color;
     QRgb cm_color;

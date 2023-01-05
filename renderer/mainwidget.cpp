@@ -51,8 +51,7 @@ MainWidget::MainWidget(QWidget *parent) :
     specular(0),
     normal(0),
     light(0),
-    m_distExp(-200000),
-    angularSpeed(0)
+    m_distExp(-200000)
 {
      setMinimumSize(400, 400);
 
@@ -233,26 +232,6 @@ void MainWidget::wheelEvent(QWheelEvent * event)
 
 void MainWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-
-
-
-    // Mouse release position - mouse press position
-    QVector2D diff = QVector2D(event->localPos()) - mousePressPosition;
-
-    // Rotation axis is perpendicular to the mouse position difference
-    // vector
-    QVector3D n = QVector3D(diff.y(), diff.x(), 0.0).normalized();
-
-    // Accelerate angular speed relative to the length of the mouse sweep
-    qreal acc = diff.length() / 100.0;
-
-    // Calculate new rotation axis as weighted sum
-    rotationAxis = (rotationAxis * angularSpeed + n * acc).normalized();
-
-    // Increase angular speed
-    angularSpeed += acc;
-
-
     if (event->button() == Qt::LeftButton){ //Qt::MidButton) {
 
            m_trackBalls[2].release(pixelPosToViewPos(event->localPos()), QQuaternion());
@@ -264,18 +243,6 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *event)
 //! [1]
 void MainWidget::timerEvent(QTimerEvent *)
 {
-    // Decrease angular speed (friction)
-    angularSpeed *= 0.95;
-
-    // Stop rotation when speed goes below threshold
-    if (angularSpeed < 0.01) {
-        angularSpeed = 0.0;
-    } else {
-        // Update rotation
-        rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
-    }
-
-    // Update scene
     update();
 }
 
