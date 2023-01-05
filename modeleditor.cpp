@@ -53,6 +53,8 @@ ModelEditor::ModelEditor(QMainWindow *parent) : QMainWindow(parent)
     */
         viewMenu = menuBar()->addMenu(tr("&View"));
 
+        QMenu *renderMenu = menuBar()->addMenu(tr("&Render"));
+
         menuBar()->addSeparator();
 
         QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
@@ -417,6 +419,7 @@ QHBoxLayout*   unkchunk2hLayout = new QHBoxLayout;
     litelabel->setWindowTitle(QApplication::translate("Light Map", "Light Map", 0));
 // renderer
     MainWidget *r = new MainWidget;
+    r->addMainMenu(renderMenu);
 /*
 connect(this,SIGNAL(newTextures(QString)),r,SLOT(onNewTextures(QString)));
 connect(this,SIGNAL(newMesh(MOD_Mesh_Parts&,std::vector<QByteArray>&, std::vector<QByteArray>&)),r,SLOT(onNewMeshdata(MOD_Mesh_Parts&,std::vector<QByteArray>&, std::vector<QByteArray>&)));

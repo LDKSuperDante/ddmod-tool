@@ -71,6 +71,7 @@ console->show();
  connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
          this, SLOT(ShowContextMenu(const QPoint &)));
  shadingmode = 0;
+ rendermode = 1;
 
     cl_color = QColor(0,0,0.5*255).rgba();
     cm_color = QColor(255,255,0).rgba();
@@ -363,7 +364,8 @@ msgBox.exec();
          this->context()->functions()->glBlendEquation(GL_FUNC_ADD);
     this->context()->functions()->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
- geometries = new GeometryEngine;
+    geometries = new GeometryEngine;
+    geometries->rendermode = rendermode;
     //qglClearColor(QColor(m_color));
     initShaders();
     initTextures();
@@ -417,59 +419,43 @@ void MainWidget::gldebugmsg(const QOpenGLDebugMessage &/* debugMessage */)
   // console->append("\n");
 }
 
-void MainWidget::ShowContextMenu(const QPoint & pos)
+void MainWidget::addMainMenu(QMenu *menu)
 {
-    // right click menu items
+    QMenu *shading = menu->addMenu("Shading Mode");
 
-    QPoint globalPos = this->mapToGlobal(pos);
-
-    QMenu myMenu;
-
-
-    QMenu *shading = myMenu.addMenu("Shading Mode");
-
-    QAction *cv1 = shading->addAction("Smooth");
+    cv1 = shading->addAction("Smooth");
     cv1->setData(0);
     cv1->setCheckable(true);
     if(shadingmode == 0)
         cv1->setChecked(true);
     connect(cv1, SIGNAL(triggered()), this, SLOT(setSmoothShading()));
 
-    QAction *cv2 = shading->addAction("Wireframe");
+    cv2 = shading->addAction("Wireframe");
     cv2->setData(1);
     cv2->setCheckable(true);
     if(shadingmode == 1)
         cv2->setChecked(true);
     connect(cv2, SIGNAL(triggered()), this, SLOT(setWireframeShading()));
 
-    QAction *cv3 = shading->addAction("Vertex");
+    cv3 = shading->addAction("Vertex");
     cv3->setCheckable(true);
     if(shadingmode == 2)
         cv3->setChecked(true);
     connect(cv3, SIGNAL(triggered()), this, SLOT(setVertexShading()));
 
+    QMenu *rendering = menu->addMenu("Render Mode");
 
-    QMenu *rendering = myMenu.addMenu("Render Mode");
-
-    QAction *cv4 = rendering->addAction("Triangles");
+    cv4 = rendering->addAction("Triangles");
     cv4->setCheckable(true);
-    if( geometries->rendermode  == 0)
+    if(rendermode == 0)
         cv4->setChecked(true);
     connect(cv4, SIGNAL(triggered()), this, SLOT(setTriangleRendering()));
 
-    QAction *cv5 = rendering->addAction("Triangle Strips");
+    cv5 = rendering->addAction("Triangle Strips");
     cv5->setCheckable(true);
-    if(geometries->rendermode == 1)
+    if(rendermode == 1)
         cv5->setChecked(true);
     connect(cv5, SIGNAL(triggered()), this, SLOT(setTriangleStripRendering()));
-
-
-
-
-    myMenu.addAction("Cancel");
-
-    // ...
-    myMenu.exec(globalPos);
 }
 
 void MainWidget::onNewTextures(QString fileName)
@@ -1340,6 +1326,9 @@ void MainWidget::setSmoothShading()
 
     qDebug() << pAction->data();
     shadingmode = 0;
+    cv1->setChecked(true);
+    cv2->setChecked(false);
+    cv3->setChecked(false);
 }
 
 void MainWidget::setWireframeShading()
@@ -1349,21 +1338,33 @@ void MainWidget::setWireframeShading()
 
     qDebug() << pAction->data();
     shadingmode = 1;
+    cv1->setChecked(false);
+    cv2->setChecked(true);
+    cv3->setChecked(false);
 }
 
 void MainWidget::setVertexShading()
 {
     shadingmode = 2;
+    cv1->setChecked(false);
+    cv2->setChecked(false);
+    cv3->setChecked(true);
 }
 
 void MainWidget::setTriangleRendering()
 {
-    geometries->rendermode = 0;
+    rendermode = 0;
+    if (geometries) geometries->rendermode = 0;
+    cv4->setChecked(true);
+    cv5->setChecked(false);
 }
 
 void MainWidget::setTriangleStripRendering()
 {
-    geometries->rendermode = 1;
+    rendermode = 1;
+    if (geometries) geometries->rendermode = 1;
+    cv4->setChecked(false);
+    cv5->setChecked(true);
 }
 
 //! [4]

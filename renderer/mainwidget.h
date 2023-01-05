@@ -200,6 +200,7 @@ std::vector< std::vector<unsigned int> > faces;
 QTextEdit *console;
 
 int shadingmode;
+int rendermode;
 void DeleteFunctions() {delete(m_pFunctions); m_pFunctions = nullptr; qDebug() << "goodbye context!";  }
 
 QOpenGLFunctions_4_3_Core * m_pFunctions = nullptr;
@@ -242,7 +243,7 @@ signals:
 
 public slots:
     void gldebugmsg(const QOpenGLDebugMessage &debugMessage);
-void ShowContextMenu(const QPoint& pos);
+    void addMainMenu(QMenu *menu);
     void onNewTextures(QString fileName);
 
 
@@ -280,8 +281,14 @@ private:
     qreal angularSpeed;
     //QQuaternion rotation;
     QRgb *m_color;
-        QRgb cl_color;
-            QRgb cm_color;
+    QRgb cl_color;
+    QRgb cm_color;
+
+    QAction *cv1;
+    QAction *cv2;
+    QAction *cv3;
+    QAction *cv4;
+    QAction *cv5;
 };
 
 #endif // MAINWIDGET_H
