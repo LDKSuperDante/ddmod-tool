@@ -67,9 +67,6 @@ console->setWindowTitle("OpenGL Logger");
 console->show();
 */
 //this->showFullScreen();
- this->setContextMenuPolicy(Qt::CustomContextMenu);
- connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
-         this, SLOT(ShowContextMenu(const QPoint &)));
  shadingmode = 0;
  rendermode = 1;
 
