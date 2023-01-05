@@ -19,14 +19,13 @@ RC_FILE = icon.rc
 
 
 SOURCES += main.cpp\
-        dialog.cpp \
     renderer/geometryengine.cpp \
     renderer/mainwidget.cpp \
     renderer/trackball.cpp \
     modeleditor.cpp \
     rmodel.cpp
 
-HEADERS  += dialog.h \
+HEADERS += \
     renderer/geometryengine.h \
     renderer/glextensions.h \
     renderer/mainwidget.h \

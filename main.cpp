@@ -1,4 +1,3 @@
-#include "dialog.h"
 #include "modeleditor.h"
 #include <QApplication>
 #include <QFile>
