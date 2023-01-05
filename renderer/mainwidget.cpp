@@ -74,10 +74,6 @@ console->show();
     cm_color = QColor(255,255,0).rgba();
     lh = 0.0f;
 
-   time = 100;
-   time2 = 0;
-   time3 = 0;
-
    dur = 1;
    tp = 0.1;
    st = 0;
@@ -91,10 +87,6 @@ console->show();
 
    mousex = 0.5;
    mousey = 0.5;
-
-    timer2 = new QTimer(this);
-    timer2->start(1);
-    connect(timer2,SIGNAL(timeout()),this,SLOT(updatetimer()));
 
     // establish known blocktypes
     blocktype[QByteArray::fromHex("14D40020")]= 349437984;
@@ -193,25 +185,6 @@ static void loadMatrix(const QMatrix4x4& m)
     glLoadMatrixf(mat);
 }
 */
-
-void MainWidget::updatetimer(){
-
-    if(time == 100){
-       dir = -1;
-    }
-    if( time == 0){
-        dir = 1;
-    }
-
-
-
-time += dir;
-//time = time % 100;
-
-//qDebug() << time;
-}
-
-
 
 QPointF MainWidget::pixelPosToViewPos(const QPointF& p)
 {
@@ -1464,7 +1437,10 @@ if(selectedmeshes.size()>0){
     program->setUniformValueArray("selected_mesh_part",selectedmeshes.data(),selectedmeshes.size());
 
 }
-program->setUniformValue("timer",(float)time/100.0f );
+
+    float timer = (QTime::currentTime().msec() % 500) / 250.0f;
+    if (timer > 1.0f) timer = 2.0f - timer;
+    program->setUniformValue("timer", timer);
 
       program->setUniformValue("lh", lh);
     // Draw  geometry

@@ -208,14 +208,12 @@ QOpenGLFunctions_4_3_Core * m_pFunctions = nullptr;
 float mousex, mousey;
            float tp;
            float dur;
-           int time,time2,time3;
            int st,et,st2,et2,s1,s2,t1,t2;
     QPointF pixelPosToViewPos(const QPointF& p);
     int m_lastTime;
     int m_mouseEventTime;
     int m_distExp;
     int m_frame;
-    int dir;
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
@@ -260,12 +258,8 @@ void setTriangleRendering();
 void setTriangleStripRendering();
 
 
-        void updatetimer();
-
-
 private:
             std::map<QByteArray,long int> blocktype;
-    QTimer* timer2;
     QBasicTimer timer;
 
     QOpenGLShaderProgram *program;
