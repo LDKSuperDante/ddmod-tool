@@ -50,7 +50,7 @@ GeometryEngine::GeometryEngine()
     : indexBuf(QOpenGLBuffer::IndexBuffer)
 {
     initializeOpenGLFunctions();
-rendermode =0;
+    rendermode = 1;
     // Generate 2 VBOs
     arrayBuf.create();
     indexBuf.create();
