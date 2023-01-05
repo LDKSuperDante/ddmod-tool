@@ -22,8 +22,7 @@ SOURCES += main.cpp\
     renderer/geometryengine.cpp \
     renderer/mainwidget.cpp \
     renderer/trackball.cpp \
-    modeleditor.cpp \
-    rmodel.cpp
+    modeleditor.cpp
 
 HEADERS += \
     renderer/geometryengine.h \
@@ -33,8 +32,7 @@ HEADERS += \
     renderer/MathUtil.h \
     renderer/trackball.h \
     renderer/Vec.h \
-    modeleditor.h \
-    rmodel.h
+    modeleditor.h
 
 qtHaveModule(opengl): QT += opengl
 
