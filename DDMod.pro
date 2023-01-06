@@ -28,10 +28,7 @@ HEADERS += \
     renderer/geometryengine.h \
     renderer/glextensions.h \
     renderer/mainwidget.h \
-    renderer/Mat.h \
-    renderer/MathUtil.h \
     renderer/trackball.h \
-    renderer/Vec.h \
     modeleditor.h
 
 qtHaveModule(opengl): QT += opengl

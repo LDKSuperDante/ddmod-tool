@@ -59,8 +59,6 @@
 #include <QStandardItem>
 // spread sheet stuff
 #include "trackball.h"
-#include "Mat.h"
-#include "Vec.h"
 #include <vector>
 
 
@@ -228,9 +226,6 @@ float mousex, mousey;
     void initTextures();
 
     QPointF mousePos;
-    Vec3f translation;
-    Mat4f modelViewMatrix;
-    Mat4f projectionMatrix;
 
 signals:
 
