@@ -63,10 +63,10 @@ GeometryEngine::~GeometryEngine()
 {
     arrayBuf.destroy();
     indexBuf.destroy();
-    for(int i=0; i<arrbuff.size();i++){
+    for(uint i=0; i<arrbuff.size();i++){
         arrbuff.at(i).destroy();
     }
-    for(int i=0; i<idxbuff.size();i++){
+    for(uint i=0; i<idxbuff.size();i++){
         idxbuff.at(i).destroy();
     }
 }
@@ -76,10 +76,10 @@ void GeometryEngine::initCubeGeometry()
 {
     arrayBuf.destroy();
     indexBuf.destroy();
-    for(int i=0; i<arrbuff.size();i++){
+    for(uint i=0; i<arrbuff.size();i++){
         arrbuff.at(i).destroy();
     }
-    for(int i=0; i<idxbuff.size();i++){
+    for(uint i=0; i<idxbuff.size();i++){
         idxbuff.at(i).destroy();
     }
     arrayBuf.create();
@@ -88,7 +88,7 @@ void GeometryEngine::initCubeGeometry()
 arrbuff.clear();
 idxbuff.clear();
 
-    for(int i=0; i<rendermodes.size();i++){
+    for(uint i=0; i<rendermodes.size();i++){
         QOpenGLBuffer buff;
         buff.create();
         arrbuff.push_back(buff);
@@ -149,7 +149,7 @@ glUniform1i(glGetUniformLocation(program->programId(), "speculartx"), 2);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D,0); //diff
-for(int i =0;i<rendermodes.size();i++){
+    for(uint i =0;i<rendermodes.size();i++){
     // Tell OpenGL which VBOs to use
   //  arrayBuf.bind();
    // indexBuf.bind();
