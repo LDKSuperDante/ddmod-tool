@@ -563,7 +563,11 @@ addDockWidget(Qt::RightDockWidgetArea,dock);
     blocktype[0x0CB68015]="4s4c4c2s";
     blocktype[0x14D40020]="3s1s4c4c4c2h2h";
     blocktype[0xA320C016]="4s8c8c4c";
+    blocktype[0xA8FAB018]="3s1s4c4c2h";
+    blocktype[0xB0983013]="3s1s4c";
     blocktype[0xBB424024]="3s1s4c4c8c2h2h4c";
+    blocktype[0xC31F201C]="3s1s4c4c2h2h";
+    blocktype[0xDB7DA014]="3s1s4c2s";
 
     unktypesfound = 0; //initalize me
 }
@@ -2770,6 +2774,7 @@ void ModelEditor::entervaluestogui()
         Mbones.amatrices[0].m[12]+Mbones.lmatrices[0].m[12],
         Mbones.amatrices[0].m[13]+Mbones.lmatrices[0].m[13],
         Mbones.amatrices[0].m[14]+Mbones.lmatrices[0].m[14]);
+
     for (uint i=0;i<Mparts.parts.size();i++) {
         MOD_Mesh_Info &mp = Mparts.parts[i];
 
@@ -2827,6 +2832,30 @@ void ModelEditor::entervaluestogui()
                 norm.normalize();
                 break;
 
+              case 0xA8FAB018:
+                vert.setX(vtx[0].s16);
+                vert.setY(vtx[1].s16);
+                vert.setZ(vtx[2].s16);
+                vert /= 32767;
+                norm.setX(vtx[4].s8);
+                norm.setY(vtx[5].s8);
+                norm.setZ(vtx[6].s8);
+                norm.normalize();
+                txu = half_to_float(vtx[12].u16);
+                txv = half_to_float(vtx[13].u16);
+                break;
+
+              case 0xB0983013:
+                vert.setX(vtx[0].s16);
+                vert.setY(vtx[1].s16);
+                vert.setZ(vtx[2].s16);
+                vert /= 32767;
+                norm.setX(vtx[4].s8);
+                norm.setY(vtx[5].s8);
+                norm.setZ(vtx[6].s8);
+                norm.normalize();
+                break;
+
               case 0xBB424024:
                 vert.setX(vtx[0].s16);
                 vert.setY(vtx[1].s16);
@@ -2839,6 +2868,29 @@ void ModelEditor::entervaluestogui()
                 txu = half_to_float(vtx[20].u16);
                 txv = half_to_float(vtx[21].u16);
                 break;
+
+              case 0xC31F201C:
+                vert.setX(vtx[0].s16);
+                vert.setY(vtx[1].s16);
+                vert.setZ(vtx[2].s16);
+                vert /= 32767;
+                norm.setX(vtx[4].s8);
+                norm.setY(vtx[5].s8);
+                norm.setZ(vtx[6].s8);
+                norm.normalize();
+                txu = half_to_float(vtx[12].u16);
+                txv = half_to_float(vtx[13].u16);
+                break;
+
+              case 0xDB7DA014:
+                vert.setX(vtx[0].s16);
+                vert.setY(vtx[1].s16);
+                vert.setZ(vtx[2].s16);
+                vert /= 32767;
+                norm.setX(vtx[4].s8);
+                norm.setY(vtx[5].s8);
+                norm.setZ(vtx[6].s8);
+                norm.normalize();
             }
 
             vert *= vbuffscale;
@@ -2950,9 +3002,9 @@ void ModelEditor::Make_VBO_Data()
         int vertcount = vertmodel->rowCount();
         for (int j = 0; j<vertcount;j++) {
             VertexData vertex = {
-                QVector4D(vertmodel->index(j,0).data().toFloat(),
-                    vertmodel->index(j,1).data().toFloat(),
-                    vertmodel->index(j,2).data().toFloat(),
+                QVector4D(vertmodel->index(j,0).data().toFloat() - Mheader.bsphere.pos.x,
+                    vertmodel->index(j,1).data().toFloat() - Mheader.bsphere.pos.y,
+                    vertmodel->index(j,2).data().toFloat() - Mheader.bsphere.pos.z,
                     0.0f),
                 QVector4D(vertmodel->index(j,3).data().toFloat(),
                     vertmodel->index(j,4).data().toFloat(),
