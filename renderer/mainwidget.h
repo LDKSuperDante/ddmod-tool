@@ -91,7 +91,11 @@ protected:
 
     int shadingmode;
     int rendermode;
-    void DeleteFunctions() {delete(m_pFunctions); m_pFunctions = nullptr; qDebug() << "goodbye context!";  }
+    void DeleteFunctions() {
+        delete(m_pFunctions);
+        m_pFunctions = nullptr;
+        // qDebug() << "goodbye context!";
+    }
 
     QOpenGLFunctions_4_3_Core * m_pFunctions = nullptr;
     float mousex, mousey;

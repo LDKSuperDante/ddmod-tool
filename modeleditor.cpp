@@ -73,11 +73,12 @@ ModelEditor::ModelEditor(QMainWindow *parent) : QMainWindow(parent)
     // layoutWidget = new QWidget(groupBox);
     // layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
     // layoutWidget->setGeometry(QRect(10, 110, 397, 92));
-    verticalLayout = new QVBoxLayout;
+    verticalLayout = new QHBoxLayout;
     // verticalLayout->setSpacing(6);
     // verticalLayout->setContentsMargins(11, 11, 11, 11);
     // verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
     // verticalLayout->setContentsMargins(0, 0, 0, 0);
+
     rdoSingle = new QRadioButton;
     rdoSingle->setObjectName(QStringLiteral("rdoSingle"));
 
@@ -323,12 +324,26 @@ ModelEditor::ModelEditor(QMainWindow *parent) : QMainWindow(parent)
     outerLayout->addWidget(groupBox);
     outerLayout->addLayout(horizontalLayout_2);
 
-
     // QVBoxLayout *textures = new QVBoxLayout(groupBox);
     difflabel = new QLabel;
     speclabel = new QLabel;
     normlabel = new QLabel;
     litelabel = new QLabel;
+
+    diffscroll = new QScrollArea;
+    specscroll = new QScrollArea;
+    normscroll = new QScrollArea;
+    litescroll = new QScrollArea;
+
+    diffscroll->setWidgetResizable(true);
+    specscroll->setWidgetResizable(true);
+    normscroll->setWidgetResizable(true);
+    litescroll->setWidgetResizable(true);
+
+    diffscroll->setWidget(difflabel);
+    specscroll->setWidget(speclabel);
+    normscroll->setWidget(normlabel);
+    litescroll->setWidget(litelabel);
 
     // textures->addWidget(difflabel);
     // textures->addWidget(speclabel);
@@ -374,10 +389,6 @@ ModelEditor::ModelEditor(QMainWindow *parent) : QMainWindow(parent)
     label_h_unkn05->setText(QApplication::translate("ModelEditor", "Memory: ", 0));
     label_h_unkn06->setText(QApplication::translate("ModelEditor", "Boundy Count: ", 0));
 
-    difflabel->setWindowTitle(QApplication::translate("Diffuse Map", "Diffuse Map", 0));
-    speclabel->setWindowTitle(QApplication::translate("Specular Map", "Specular Map", 0));
-    normlabel->setWindowTitle(QApplication::translate("Normal Map", "Normal Map", 0));
-    litelabel->setWindowTitle(QApplication::translate("Light Map", "Light Map", 0));
 // renderer
     MainWidget *r = new MainWidget;
     r->addMainMenu(renderMenu);
@@ -393,7 +404,10 @@ ModelEditor::ModelEditor(QMainWindow *parent) : QMainWindow(parent)
     // this->setLayout(outerLayout);
     QDockWidget *dock = new QDockWidget(tr("Headers"),this);
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
-    dock->setWidget(groupBox);
+    QScrollArea *scroll = new QScrollArea;
+    scroll->setWidgetResizable(true);
+    scroll->setWidget(groupBox);
+    dock->setWidget(scroll);
     // dock->setFloating(true);
     addDockWidget(Qt::LeftDockWidgetArea,dock);
     viewMenu->addAction(dock->toggleViewAction());
@@ -590,7 +604,7 @@ void ModelEditor::open_file(QString fileName)
         const QPixmap pixmap(tx);
         difflabel->setPixmap(pixmap);
         // difflabel->show();
-        Texturestabs->addTab(difflabel,"Diffuse");
+        Texturestabs->addTab(diffscroll,"Diffuse");
         // const QImage image = pixmap.toImage();
         // qDebug() << (image.isNull() ? "QImage error" : "QImage ok");
 
@@ -604,7 +618,7 @@ void ModelEditor::open_file(QString fileName)
         // qDebug() << (image2.isNull() ? "QImage error" : "QImage ok");
 
         // speclabel->show();
-        Texturestabs->addTab(speclabel,"Specular");
+        Texturestabs->addTab(specscroll,"Specular");
         tx= fileName.left(txcheck);
         tx.append("_NM.dds");
 
@@ -614,7 +628,7 @@ void ModelEditor::open_file(QString fileName)
         // const QImage image3 = pixmap3.toImage();
         // qDebug() << (image3.isNull() ? "QImage error" : "QImage ok");
         // normlabel->show();
-        Texturestabs->addTab(normlabel,"Normal");
+        Texturestabs->addTab(normscroll,"Normal");
         tx= fileName.left(txcheck);
         tx.append("_TM.dds");
 
@@ -624,7 +638,7 @@ void ModelEditor::open_file(QString fileName)
         // const QImage image4 = pixmap4.toImage();
         // qDebug() << (image4.isNull() ? "QImage error" : "QImage ok");
         // litelabel->show();
-        Texturestabs->addTab(litelabel,"Light");
+        Texturestabs->addTab(litescroll,"Light");
     }
 
 // clear old selection
@@ -645,7 +659,7 @@ void ModelEditor::open_file(QString fileName)
         QMessageBox msgBox;
         msgBox.setText(QString("Error Reading File: \n").append(fileName.toLocal8Bit().constData()));
         msgBox.exec();
-	return;
+        return;
     }
 
     size_t Fsize;
@@ -1494,9 +1508,9 @@ void ModelEditor::write_file_le(FILE *f, uint version)
     for (uint i=0;i<Mheader.groupcount;i++) {
         MOD_Group_Info &ginf = Mgroups.groupinfo[i];
         write_u32le(f,ginf.id);
-	write_u32le(f,ginf.h1);
-	write_u32le(f,ginf.h2);
-	write_u32le(f,ginf.h3);
+        write_u32le(f,ginf.h1);
+        write_u32le(f,ginf.h2);
+        write_u32le(f,ginf.h3);
         write_sphere_le(f,ginf.bsphere);
     }
 

@@ -18,6 +18,7 @@
 #include <QToolTip>
 #include <QVBoxLayout>
 #include <QVariant>
+#include <QScrollArea>
 // spread sheet stuff
 #include <QList>
 #include <QTableView>
@@ -65,7 +66,7 @@ private:
 
     QGroupBox *groupBox;
     QWidget *layoutWidget;
-    QVBoxLayout *verticalLayout;
+    QHBoxLayout *verticalLayout;
     QVBoxLayout *outerLayout;
     QVBoxLayout *insideboxLayout;
 
@@ -79,6 +80,11 @@ private:
     QLabel *speclabel;
     QLabel *normlabel;
     QLabel *litelabel;
+
+    QScrollArea *diffscroll;
+    QScrollArea *specscroll;
+    QScrollArea *normscroll;
+    QScrollArea *litescroll;
 
     QComboBox *cmbAddress;
     QLineEdit *spinboxIdle;
