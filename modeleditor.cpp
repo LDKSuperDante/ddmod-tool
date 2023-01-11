@@ -583,7 +583,7 @@ addDockWidget(Qt::RightDockWidgetArea,dock);
     blocktype[0xB0983013]="3s1s4c";
     blocktype[0xBB424024]="3s1s4c4c8c2h2h4c";
     blocktype[0xC31F201C]="3s1s4c4c2h2h";
-    blocktype[0xD8297028]="3f4s2h";
+    blocktype[0xD8297028]="3f4c4c2h";
     blocktype[0xDB7DA014]="3s1s4c2s";
 
     unktypesfound = 0; //initalize me
@@ -2830,7 +2830,7 @@ void ModelEditor::entervaluestogui()
                 norm.setX(vtx[4].u8-127);
                 norm.setY(vtx[5].u8-127);
                 norm.setZ(vtx[6].u8-127);
-                norm.normalize();
+                norm /= 127;
                 txu = half_to_float(vtx[16].u16);
                 txv = half_to_float(vtx[17].u16);
                 break;
@@ -2842,7 +2842,7 @@ void ModelEditor::entervaluestogui()
                 norm.setX(vtx[3].u8-127);
                 norm.setY(vtx[4].u8-127);
                 norm.setZ(vtx[5].u8-127);
-                norm.normalize();
+                norm /= 127;
                 txu = half_to_float(vtx[11].u16);
                 txv = half_to_float(vtx[12].u16);
                 break;
@@ -2855,7 +2855,7 @@ void ModelEditor::entervaluestogui()
                 norm.setX(vtx[12].u8-127);
                 norm.setY(vtx[13].u8-127);
                 norm.setZ(vtx[14].u8-127);
-                norm.normalize();
+                norm /= 127;
                 break;
 
               case 0xA7D7D036:
@@ -2865,7 +2865,7 @@ void ModelEditor::entervaluestogui()
                 norm.setX(vtx[3].u8-127);
                 norm.setY(vtx[4].u8-127);
                 norm.setZ(vtx[5].u8-127);
-                norm.normalize();
+                norm /= 127;
                 txu = half_to_float(vtx[7].u16);
                 txv = half_to_float(vtx[8].u16);
                 break;
@@ -2878,7 +2878,7 @@ void ModelEditor::entervaluestogui()
                 norm.setX(vtx[4].u8-127);
                 norm.setY(vtx[5].u8-127);
                 norm.setZ(vtx[6].u8-127);
-                norm.normalize();
+                norm /= 127;
                 txu = half_to_float(vtx[12].u16);
                 txv = half_to_float(vtx[13].u16);
                 break;
@@ -2891,7 +2891,7 @@ void ModelEditor::entervaluestogui()
                 norm.setX(vtx[4].u8-127);
                 norm.setY(vtx[5].u8-127);
                 norm.setZ(vtx[6].u8-127);
-                norm.normalize();
+                norm /= 127;
                 break;
 
               case 0xBB424024:
@@ -2902,7 +2902,7 @@ void ModelEditor::entervaluestogui()
                 norm.setX(vtx[4].u8-127);
                 norm.setY(vtx[5].u8-127);
                 norm.setZ(vtx[6].u8-127);
-                norm.normalize();
+                norm /= 127;
                 txu = half_to_float(vtx[20].u16);
                 txv = half_to_float(vtx[21].u16);
                 break;
@@ -2915,7 +2915,7 @@ void ModelEditor::entervaluestogui()
                 norm.setX(vtx[4].u8-127);
                 norm.setY(vtx[5].u8-127);
                 norm.setZ(vtx[6].u8-127);
-                norm.normalize();
+                norm /= 127;
                 txu = half_to_float(vtx[12].u16);
                 txv = half_to_float(vtx[13].u16);
                 break;
@@ -2924,10 +2924,10 @@ void ModelEditor::entervaluestogui()
                 vert.setX(vtx[0].f32);
                 vert.setY(vtx[1].f32);
                 vert.setZ(vtx[2].f32);
-                norm.setX(vtx[3].s16);
-                norm.setY(vtx[4].s16);
-                norm.setZ(vtx[5].s16);
-                norm.normalize();
+                norm.setX(vtx[3].u8-127);
+                norm.setY(vtx[4].u8-127);
+                norm.setZ(vtx[5].u8-127);
+                norm /= 127;
                 txu = half_to_float(vtx[7].u16);
                 txv = half_to_float(vtx[8].u16);
                 break;
@@ -2940,7 +2940,7 @@ void ModelEditor::entervaluestogui()
                 norm.setX(vtx[4].u8-127);
                 norm.setY(vtx[5].u8-127);
                 norm.setZ(vtx[6].u8-127);
-                norm.normalize();
+                norm /= 127;
                 break;
             }
 
