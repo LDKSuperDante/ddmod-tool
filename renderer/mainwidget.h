@@ -141,7 +141,7 @@ private:
     GeometryEngine * geometries;
     float lh;
     GLuint htex,btex,hantex,legtex;
-    TrackBall m_trackBalls[3];
+    TrackBall m_trackBall;
 
     QMatrix4x4 projection;
 

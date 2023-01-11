@@ -50,9 +50,7 @@ MainWidget::MainWidget(QWidget *parent) :
 {
      setMinimumSize(400, 400);
 
-    m_trackBalls[0] = TrackBall(0.05f, QVector3D(0, 1, 0), TrackBall::Sphere);
-    m_trackBalls[1] = TrackBall(0.005f, QVector3D(0, 0, 1), TrackBall::Sphere);
-    m_trackBalls[2] = TrackBall(0.0f, QVector3D(0, 1, 0), TrackBall::Plane);
+     m_trackBall = TrackBall(0.0f, QVector3D(0, 1, 0), TrackBall::Plane);
 
 /*
 console = new QTextEdit;
@@ -108,7 +106,7 @@ void MainWidget::mousePressEvent(QMouseEvent *event)
     mousePressPosition = QVector2D(event->localPos());
 
     if (event->buttons() & Qt::LeftButton) {
-        m_trackBalls[2].push(pixelPosToViewPos(event->localPos()), QQuaternion());
+        m_trackBall.push(pixelPosToViewPos(event->localPos()), QQuaternion());
         event->accept();
     }
 }
@@ -121,10 +119,10 @@ void MainWidget::mouseMoveEvent(QMouseEvent *event)
     }
 
     if (event->buttons() & Qt::LeftButton){ //Qt::MidButton) {
-        m_trackBalls[2].move(pixelPosToViewPos(event->localPos()), QQuaternion());
+        m_trackBall.move(pixelPosToViewPos(event->localPos()), QQuaternion());
         event->accept();
     } else {
-        m_trackBalls[2].release(pixelPosToViewPos(event->localPos()), QQuaternion());
+        m_trackBall.release(pixelPosToViewPos(event->localPos()), QQuaternion());
     }
 }
 
@@ -139,7 +137,7 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton){ //Qt::MidButton) {
 
-           m_trackBalls[2].release(pixelPosToViewPos(event->localPos()), QQuaternion());
+           m_trackBall.release(pixelPosToViewPos(event->localPos()), QQuaternion());
         event->accept();
     }
 }
@@ -567,7 +565,7 @@ QMatrix4x4 matrix;
 
     QMatrix4x4 matrix;
     matrix.translate(0.0, 0.0, m_distExp);
-    matrix.rotate(m_trackBalls[2].rotation());
+    matrix.rotate(m_trackBall.rotation());
 
     program->setUniformValue("mousex",mousex);
     program->setUniformValue("mousey",mousey);
