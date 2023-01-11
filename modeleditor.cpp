@@ -2827,9 +2827,9 @@ void ModelEditor::entervaluestogui()
                 vert.setY(vtx[1].s16);
                 vert.setZ(vtx[2].s16);
                 vert /= 32767;
-                norm.setX(vtx[4].s8);
-                norm.setY(vtx[5].s8);
-                norm.setZ(vtx[6].s8);
+                norm.setX(vtx[4].u8-127);
+                norm.setY(vtx[5].u8-127);
+                norm.setZ(vtx[6].u8-127);
                 norm.normalize();
                 txu = half_to_float(vtx[16].u16);
                 txv = half_to_float(vtx[17].u16);
@@ -2839,9 +2839,9 @@ void ModelEditor::entervaluestogui()
                 vert.setX(vtx[0].f32);
                 vert.setY(vtx[1].f32);
                 vert.setZ(vtx[2].f32);
-                norm.setX(vtx[3].s8);
-                norm.setY(vtx[4].s8);
-                norm.setZ(vtx[5].s8);
+                norm.setX(vtx[3].u8-127);
+                norm.setY(vtx[4].u8-127);
+                norm.setZ(vtx[5].u8-127);
                 norm.normalize();
                 txu = half_to_float(vtx[11].u16);
                 txv = half_to_float(vtx[12].u16);
@@ -2852,9 +2852,9 @@ void ModelEditor::entervaluestogui()
                 vert.setY(vtx[1].s16);
                 vert.setZ(vtx[2].s16);
                 vert /= 32767;
-                norm.setX(vtx[12].s8);
-                norm.setY(vtx[13].s8);
-                norm.setZ(vtx[14].s8);
+                norm.setX(vtx[12].u8-127);
+                norm.setY(vtx[13].u8-127);
+                norm.setZ(vtx[14].u8-127);
                 norm.normalize();
                 break;
 
@@ -2862,9 +2862,9 @@ void ModelEditor::entervaluestogui()
                 vert.setX(vtx[0].f32);
                 vert.setY(vtx[1].f32);
                 vert.setZ(vtx[2].f32);
-                norm.setX(vtx[3].s8);
-                norm.setY(vtx[4].s8);
-                norm.setZ(vtx[5].s8);
+                norm.setX(vtx[3].u8-127);
+                norm.setY(vtx[4].u8-127);
+                norm.setZ(vtx[5].u8-127);
                 norm.normalize();
                 txu = half_to_float(vtx[7].u16);
                 txv = half_to_float(vtx[8].u16);
@@ -2875,9 +2875,9 @@ void ModelEditor::entervaluestogui()
                 vert.setY(vtx[1].s16);
                 vert.setZ(vtx[2].s16);
                 vert /= 32767;
-                norm.setX(vtx[4].s8);
-                norm.setY(vtx[5].s8);
-                norm.setZ(vtx[6].s8);
+                norm.setX(vtx[4].u8-127);
+                norm.setY(vtx[5].u8-127);
+                norm.setZ(vtx[6].u8-127);
                 norm.normalize();
                 txu = half_to_float(vtx[12].u16);
                 txv = half_to_float(vtx[13].u16);
@@ -2888,9 +2888,9 @@ void ModelEditor::entervaluestogui()
                 vert.setY(vtx[1].s16);
                 vert.setZ(vtx[2].s16);
                 vert /= 32767;
-                norm.setX(vtx[4].s8);
-                norm.setY(vtx[5].s8);
-                norm.setZ(vtx[6].s8);
+                norm.setX(vtx[4].u8-127);
+                norm.setY(vtx[5].u8-127);
+                norm.setZ(vtx[6].u8-127);
                 norm.normalize();
                 break;
 
@@ -2899,9 +2899,9 @@ void ModelEditor::entervaluestogui()
                 vert.setY(vtx[1].s16);
                 vert.setZ(vtx[2].s16);
                 vert /= 32767;
-                norm.setX(vtx[4].s8);
-                norm.setY(vtx[5].s8);
-                norm.setZ(vtx[6].s8);
+                norm.setX(vtx[4].u8-127);
+                norm.setY(vtx[5].u8-127);
+                norm.setZ(vtx[6].u8-127);
                 norm.normalize();
                 txu = half_to_float(vtx[20].u16);
                 txv = half_to_float(vtx[21].u16);
@@ -2912,9 +2912,9 @@ void ModelEditor::entervaluestogui()
                 vert.setY(vtx[1].s16);
                 vert.setZ(vtx[2].s16);
                 vert /= 32767;
-                norm.setX(vtx[4].s8);
-                norm.setY(vtx[5].s8);
-                norm.setZ(vtx[6].s8);
+                norm.setX(vtx[4].u8-127);
+                norm.setY(vtx[5].u8-127);
+                norm.setZ(vtx[6].u8-127);
                 norm.normalize();
                 txu = half_to_float(vtx[12].u16);
                 txv = half_to_float(vtx[13].u16);
@@ -2937,9 +2937,9 @@ void ModelEditor::entervaluestogui()
                 vert.setY(vtx[1].s16);
                 vert.setZ(vtx[2].s16);
                 vert /= 32767;
-                norm.setX(vtx[4].s8);
-                norm.setY(vtx[5].s8);
-                norm.setZ(vtx[6].s8);
+                norm.setX(vtx[4].u8-127);
+                norm.setY(vtx[5].u8-127);
+                norm.setZ(vtx[6].u8-127);
                 norm.normalize();
                 break;
             }
