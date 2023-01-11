@@ -2783,21 +2783,11 @@ void ModelEditor::entervaluestogui()
 /////////////////  writing vbo permesh part data
 //std::vector<VertexData> meshdat;
 
-    QVector3D vbuffscale(1.0f, 1.0f, 1.0f);
-    QVector3D bbmin(0.0f, 0.0f, 0.0f);
+    QMatrix4x4 mtx;
 
     if (Mheader.bonecount)
-    {
-        Matrix &am = Mbones.amatrices[0];
-        Matrix &lm = Mbones.lmatrices[0];
-
-        vbuffscale.setX(am.m[0]);
-        vbuffscale.setY(am.m[5]);
-        vbuffscale.setZ(am.m[10]);
-        bbmin.setX(am.m[12]+lm.m[12]);
-        bbmin.setY(am.m[13]+lm.m[13]);
-        bbmin.setZ(am.m[14]+lm.m[14]);
-    }
+        mtx = QMatrix4x4(Mbones.amatrices[0].m) *
+            QMatrix4x4(Mbones.lmatrices[0].m);
 
     for (uint i=0;i<Mparts.parts.size();i++) {
         MOD_Mesh_Info &mp = Mparts.parts[i];
@@ -2954,8 +2944,8 @@ void ModelEditor::entervaluestogui()
                 break;
             }
 
-            vert *= vbuffscale;
-            vert += bbmin;
+            if (Mheader.bonecount)
+                vert = (QVector4D(vert, 1.0f) * mtx).toVector3D();
 
             QList<QStandardItem*> row;
 
