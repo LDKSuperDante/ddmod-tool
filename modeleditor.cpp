@@ -2095,8 +2095,8 @@ void ModelEditor::read_sphere_le(char *buffer, uint &offset, Sphere &sphere)
 
 void ModelEditor::read_sphere_be(char *buffer, uint &offset, Sphere &sphere)
 {
-    read_vec3le(buffer,offset,sphere.pos);
-    sphere.r = read_f32le(buffer,offset);
+    read_vec3be(buffer,offset,sphere.pos);
+    sphere.r = read_f32be(buffer,offset);
 }
 
 void ModelEditor::read_aabb_le(char *buffer, uint &offset, AABB &aabb)
@@ -2222,8 +2222,8 @@ void ModelEditor::write_sphere_le(FILE *f, Sphere &sphere)
 
 void ModelEditor::write_sphere_be(FILE *f, Sphere &sphere)
 {
-    write_vec3le(f,sphere.pos);
-    write_f32le(f,sphere.r);
+    write_vec3be(f,sphere.pos);
+    write_f32be(f,sphere.r);
 }
 
 void ModelEditor::write_aabb_le(FILE *f, AABB &aabb)
