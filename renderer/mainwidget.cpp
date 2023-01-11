@@ -46,7 +46,7 @@
 
 MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent),
-    m_distExp(-200000)
+    m_distExp(-400)
 {
      setMinimumSize(400, 400);
 
@@ -130,7 +130,7 @@ void MainWidget::mouseMoveEvent(QMouseEvent *event)
 
 void MainWidget::wheelEvent(QWheelEvent * event)
 {
-       m_distExp += event->angleDelta().y() * 50;
+       m_distExp += event->angleDelta().y() / 12;
 
        // qDebug() << m_distExp;
 }
@@ -566,9 +566,8 @@ QMatrix4x4 matrix;
 */
 
     QMatrix4x4 matrix;
-    matrix.translate(0.0, 0.0, -1.0);
+    matrix.translate(0.0, 0.0, m_distExp);
     matrix.rotate(m_trackBalls[2].rotation());
-    matrix(2, 3) -= -m_distExp/600.0f;//-20.0f * exp(m_distExp / 1200.0f);
 
     program->setUniformValue("mousex",mousex);
     program->setUniformValue("mousey",mousey);
