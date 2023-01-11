@@ -46,11 +46,6 @@
 
 MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent),
-    texture(0),
-    diffuse(0),
-    specular(0),
-    normal(0),
-    light(0),
     m_distExp(-200000)
 {
      setMinimumSize(400, 400);
@@ -66,6 +61,7 @@ console->setWindowTitle("OpenGL Logger");
 console->show();
 */
 //this->showFullScreen();
+
     shadingmode = 0;
     rendermode = 1;
 
@@ -95,7 +91,6 @@ MainWidget::~MainWidget()
     deleteTexture(btex);
     deleteTexture(b2tex);
     deleteTexture(hantex);
-    deleteTexture(ftex);
     */
 }
 
@@ -249,6 +244,10 @@ void MainWidget::initShaders()
 //! [4]
 void MainWidget::initTextures()
 {
+    this->context()->functions()->glGenTextures(1, &htex);
+    this->context()->functions()->glGenTextures(1, &btex);
+    this->context()->functions()->glGenTextures(1, &legtex);
+    this->context()->functions()->glGenTextures(1, &hantex);
 }
 
 void MainWidget::gldebugmsg(const QOpenGLDebugMessage &/* debugMessage */)
@@ -340,9 +339,7 @@ void MainWidget::onNewTextures(QString fileName)
 
         this->context()->functions()->glEnable(GL_TEXTURE_2D);
 
-
         // htex =     bindTexture(image); //diffuse
-        this->context()->functions()->glGenTextures(1, &htex);
         this->context()->functions()->glActiveTexture(GL_TEXTURE0 + 1);
         this->context()->functions()->glBindTexture(GL_TEXTURE_2D, htex);
 
@@ -365,7 +362,6 @@ void MainWidget::onNewTextures(QString fileName)
         this->context()->functions()->glActiveTexture(GL_TEXTURE0);
 
         //btex =  bindTexture(image2); //specular
-        this->context()->functions()->glGenTextures(1, &btex);
         this->context()->functions()->glActiveTexture(GL_TEXTURE0 + 2);
         this->context()->functions()->glBindTexture(GL_TEXTURE_2D, btex);
 
@@ -388,7 +384,6 @@ void MainWidget::onNewTextures(QString fileName)
         this->context()->functions()->glBindTexture(GL_TEXTURE_2D, 0);
         this->context()->functions()->glActiveTexture(GL_TEXTURE0);
 
-        this->context()->functions()->glGenTextures(1, &legtex);
         this->context()->functions()->glActiveTexture(GL_TEXTURE0 +3);
         this->context()->functions()->glBindTexture(GL_TEXTURE_2D, legtex);
 
@@ -411,7 +406,6 @@ void MainWidget::onNewTextures(QString fileName)
         this->context()->functions()->glActiveTexture(GL_TEXTURE0);
 
         //  hantex =     bindTexture(image4); //light
-        this->context()->functions()->glGenTextures(1, &hantex);
         this->context()->functions()->glActiveTexture(GL_TEXTURE0+4);
         this->context()->functions()->glBindTexture(GL_TEXTURE_2D, hantex);
 
@@ -437,7 +431,6 @@ void MainWidget::onNewTextures(QString fileName)
         geometries->spectex = btex;
         geometries->lighttex = hantex;
         geometries->normtex = legtex;
-        // geometries->ftex = ftex;
     }
 }
 

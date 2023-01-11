@@ -73,11 +73,6 @@ public:
     explicit MainWidget(QWidget *parent = 0);
 
     ~MainWidget();
-    QOpenGLTexture *texture;
-    QOpenGLTexture *diffuse;
-    QOpenGLTexture *specular;
-    QOpenGLTexture *normal;
-    QOpenGLTexture *light;
 
 protected:
     std::vector<int> selectedmeshes;
@@ -87,7 +82,7 @@ protected:
     std::vector< std::vector< VertexData > > vertices;
     std::vector< std::vector<unsigned int> > faces;
 
-    QTextEdit *console;
+    // QTextEdit *console;
 
     int shadingmode;
     int rendermode;
@@ -145,7 +140,7 @@ private:
     QOpenGLShaderProgram *program;
     GeometryEngine * geometries;
     float lh;
-    GLuint htex,btex,b2tex,hantex,legtex,ftex;
+    GLuint htex,btex,hantex,legtex;
     TrackBall m_trackBalls[3];
 
     QMatrix4x4 projection;

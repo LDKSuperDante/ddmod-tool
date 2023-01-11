@@ -576,11 +576,14 @@ addDockWidget(Qt::RightDockWidgetArea,dock);
     // establish known blocktypes
     blocktype[0x0CB68015]="4s4c4c2s";
     blocktype[0x14D40020]="3s1s4c4c4c2h2h";
+    blocktype[0x5E7F202C]="3f4c4c2h2h";
     blocktype[0xA320C016]="4s8c8c4c";
+    blocktype[0xA7D7D036]="3f4c2h";
     blocktype[0xA8FAB018]="3s1s4c4c2h";
     blocktype[0xB0983013]="3s1s4c";
     blocktype[0xBB424024]="3s1s4c4c8c2h2h4c";
     blocktype[0xC31F201C]="3s1s4c4c2h2h";
+    blocktype[0xD8297028]="3f4s2h";
     blocktype[0xDB7DA014]="3s1s4c2s";
 
     unktypesfound = 0; //initalize me
@@ -2780,14 +2783,21 @@ void ModelEditor::entervaluestogui()
 /////////////////  writing vbo permesh part data
 //std::vector<VertexData> meshdat;
 
-    QVector3D vbuffscale(
-        Mbones.amatrices[0].m[0],
-        Mbones.amatrices[0].m[5],
-        Mbones.amatrices[0].m[10]);
-    QVector3D bbmin(
-        Mbones.amatrices[0].m[12]+Mbones.lmatrices[0].m[12],
-        Mbones.amatrices[0].m[13]+Mbones.lmatrices[0].m[13],
-        Mbones.amatrices[0].m[14]+Mbones.lmatrices[0].m[14]);
+    QVector3D vbuffscale(1.0f, 1.0f, 1.0f);
+    QVector3D bbmin(0.0f, 0.0f, 0.0f);
+
+    if (Mheader.bonecount)
+    {
+        Matrix &am = Mbones.amatrices[0];
+        Matrix &lm = Mbones.lmatrices[0];
+
+        vbuffscale.setX(am.m[0]);
+        vbuffscale.setY(am.m[5]);
+        vbuffscale.setZ(am.m[10]);
+        bbmin.setX(am.m[12]+lm.m[12]);
+        bbmin.setY(am.m[13]+lm.m[13]);
+        bbmin.setZ(am.m[14]+lm.m[14]);
+    }
 
     for (uint i=0;i<Mparts.parts.size();i++) {
         MOD_Mesh_Info &mp = Mparts.parts[i];
@@ -2835,6 +2845,18 @@ void ModelEditor::entervaluestogui()
                 txv = half_to_float(vtx[17].u16);
                 break;
 
+              case 0x5E7F202C:
+                vert.setX(vtx[0].f32);
+                vert.setY(vtx[1].f32);
+                vert.setZ(vtx[2].f32);
+                norm.setX(vtx[3].s8);
+                norm.setY(vtx[4].s8);
+                norm.setZ(vtx[5].s8);
+                norm.normalize();
+                txu = half_to_float(vtx[11].u16);
+                txv = half_to_float(vtx[12].u16);
+                break;
+
               case 0xA320C016:
                 vert.setX(vtx[0].s16);
                 vert.setY(vtx[1].s16);
@@ -2844,6 +2866,18 @@ void ModelEditor::entervaluestogui()
                 norm.setY(vtx[13].s8);
                 norm.setZ(vtx[14].s8);
                 norm.normalize();
+                break;
+
+              case 0xA7D7D036:
+                vert.setX(vtx[0].f32);
+                vert.setY(vtx[1].f32);
+                vert.setZ(vtx[2].f32);
+                norm.setX(vtx[3].s8);
+                norm.setY(vtx[4].s8);
+                norm.setZ(vtx[5].s8);
+                norm.normalize();
+                txu = half_to_float(vtx[7].u16);
+                txv = half_to_float(vtx[8].u16);
                 break;
 
               case 0xA8FAB018:
@@ -2896,6 +2930,18 @@ void ModelEditor::entervaluestogui()
                 txv = half_to_float(vtx[13].u16);
                 break;
 
+              case 0xD8297028:
+                vert.setX(vtx[0].f32);
+                vert.setY(vtx[1].f32);
+                vert.setZ(vtx[2].f32);
+                norm.setX(vtx[3].s16);
+                norm.setY(vtx[4].s16);
+                norm.setZ(vtx[5].s16);
+                norm.normalize();
+                txu = half_to_float(vtx[7].u16);
+                txv = half_to_float(vtx[8].u16);
+                break;
+
               case 0xDB7DA014:
                 vert.setX(vtx[0].s16);
                 vert.setY(vtx[1].s16);
@@ -2905,6 +2951,7 @@ void ModelEditor::entervaluestogui()
                 norm.setY(vtx[5].s8);
                 norm.setZ(vtx[6].s8);
                 norm.normalize();
+                break;
             }
 
             vert *= vbuffscale;
@@ -2968,13 +3015,13 @@ void ModelEditor::entervaluestogui()
                 if (strip.size() & 1)
                     strip.append(new QStandardItem(QString::number(last)));
                 strip.append(new QStandardItem(QString::number(last)));
-                last = mp.faces[j+1];
+                last = mp.faces[j+1] - mp.minindex;
                 strip.append(new QStandardItem(QString::number(last)));
             }
             else
             {
-                strip.append(new QStandardItem(QString::number(mp.faces[j])));
-                last = mp.faces[j];
+                last = mp.faces[j] - mp.minindex;
+                strip.append(new QStandardItem(QString::number(last)));
             }
         }
         model->appendRow(strip);
@@ -3007,6 +3054,9 @@ void ModelEditor::Make_VBO_Data()
     QStandardItemModel* meshpartmodel = (QStandardItemModel*)((QTableView*)MeshPartstabs->widget(0))->model();
     int rows = meshpartmodel->rowCount();
 
+    float scale = 100.0f;
+    if (Mheader.bsphere.r > 1.0f) scale /= Mheader.bsphere.r;
+
     for (int i =  0; i<rows; i++) {  // for each mesh part
 
         rendermodes.push_back(meshpartmodel->index(i,8).data().toInt()); // set render mode
@@ -3016,9 +3066,10 @@ void ModelEditor::Make_VBO_Data()
         int vertcount = vertmodel->rowCount();
         for (int j = 0; j<vertcount;j++) {
             VertexData vertex = {
-                QVector4D(vertmodel->index(j,0).data().toFloat() - Mheader.bsphere.pos.x,
-                    vertmodel->index(j,1).data().toFloat() - Mheader.bsphere.pos.y,
-                    vertmodel->index(j,2).data().toFloat() - Mheader.bsphere.pos.z,
+                QVector4D(
+                    (vertmodel->index(j,0).data().toFloat() - Mheader.bsphere.pos.x) * scale,
+                    (vertmodel->index(j,1).data().toFloat() - Mheader.bsphere.pos.y) * scale,
+                    (vertmodel->index(j,2).data().toFloat() - Mheader.bsphere.pos.z) * scale,
                     0.0f),
                 QVector4D(vertmodel->index(j,3).data().toFloat(),
                     vertmodel->index(j,4).data().toFloat(),
