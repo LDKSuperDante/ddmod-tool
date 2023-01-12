@@ -29,15 +29,11 @@ void main()
         discard;
     }
 
-    vec3 n = texture2D(diffusetx, v_texcoord.st).xyz;
-    n = mat3(mv_matrix) * n;
-    n = normalize(v_normal + n);
-
-    vec3 r = reflect(normalize(v_position.xyz), n);
+    vec3 r = reflect(normalize(v_position.xyz), v_normal);
     float s = pow(clamp(dot(r, LightDir), 0, 1), 32);
     vec3 spec = texture2D(speculartx, v_texcoord.st).xyz;
 
-    float l = clamp(dot(n, LightDir), 0, 1) * 0.75 + 0.25;
+    float l = clamp(dot(v_normal, LightDir), 0, 1) * 0.75 + 0.25;
     color = vec4(color.rgb * l + spec * s, 1.0);
 
     for(int i=0;i<selsize;i++) {
