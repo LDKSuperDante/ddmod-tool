@@ -14,7 +14,6 @@ uniform float timer;
 uniform int selsize;
 uniform int selected_mesh_part[100];
 
-uniform mat4 mv_matrix;
 uniform vec3 LightDir;
 
 varying vec4 v_position;
