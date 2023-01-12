@@ -431,13 +431,9 @@ private:
     std::map<int,int> sel;
 
 signals:
-    void newTextures(QString fileName);
-    // void newMesh(MOD_Mesh_Parts &mesh, std::vector<Matrix> &lmatrices, std::vector<Matrix> &amatrices);//decipated
-    void newDAPCMesh(MOD_Mesh_Parts &mesh); //decipated
+    void newTextures(const QImage &diff, const QImage &spec, const QImage &norm, const QImage &light);
     void NewMeshData(std::vector<int> &rmodes, std::vector< std::vector< VertexData > > &arrverts, std::vector< std::vector<unsigned int> > &arrfaces);
     void newMeshPartSelection(std::vector<int> &selected);
-
-public slots:
 
 private slots:
     void about();

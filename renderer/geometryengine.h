@@ -71,7 +71,6 @@ public:
     std::vector< std::vector<unsigned int> > faces;
 
 private:
-
     std::vector< QOpenGLBuffer > arrbuff;
     std::vector< QOpenGLBuffer > idxbuff;
 

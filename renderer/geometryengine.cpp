@@ -43,9 +43,6 @@
 #include <QVector2D>
 #include <QVector3D>
 
-
-
-//! [0]
 GeometryEngine::GeometryEngine()
     : indexBuf(QOpenGLBuffer::IndexBuffer)
 {
@@ -70,7 +67,6 @@ GeometryEngine::~GeometryEngine()
         idxbuff.at(i).destroy();
     }
 }
-//! [0]
 
 void GeometryEngine::initCubeGeometry()
 {
@@ -85,8 +81,8 @@ void GeometryEngine::initCubeGeometry()
     arrayBuf.create();
     indexBuf.create();
 
-arrbuff.clear();
-idxbuff.clear();
+    arrbuff.clear();
+    idxbuff.clear();
 
     for(uint i=0; i<rendermodes.size();i++){
         QOpenGLBuffer buff;
@@ -95,7 +91,6 @@ idxbuff.clear();
         QOpenGLBuffer idx(QOpenGLBuffer::IndexBuffer);
         idx.create();
         idxbuff.push_back(idx);
-
 
         // Transfer vertex data to VBO
         buff.bind();
@@ -106,8 +101,6 @@ idxbuff.clear();
         idx.allocate(faces.at(i).data(), faces.at(i).size() * sizeof(unsigned int));
     }
 
-
-//! [1]
     // Transfer vertex data to VBO 0
     arrayBuf.bind();
     arrayBuf.allocate(mesh.data(), mesh.size() * sizeof(VertexData));
@@ -115,29 +108,26 @@ idxbuff.clear();
     // Transfer index data to VBO 1
     indexBuf.bind();
     indexBuf.allocate(indecies.data(), indecies.size() * sizeof(unsigned int));
-//! [1]
 }
 
-//! [2]
 void GeometryEngine::drawCubeGeometry(QOpenGLShaderProgram *program)
 {
     // Tell OpenGL which VBOs to use
-   // arrayBuf.bind();
-   // indexBuf.bind();
+    // arrayBuf.bind();
+    // indexBuf.bind();
 
     if(rendermodes.size() >0){
 
     glActiveTexture(GL_TEXTURE0+1);
     glBindTexture(GL_TEXTURE_2D,difftex); //diff
 
-
-     glUniform1i(glGetUniformLocation(program->programId(), "diffusetx"), 1);
-     program->setUniformValue("diffusetx", 1);
-     glActiveTexture(GL_TEXTURE0+2);
-     glBindTexture(GL_TEXTURE_2D,spectex); // spe
-glUniform1i(glGetUniformLocation(program->programId(), "speculartx"), 2);
+    glUniform1i(glGetUniformLocation(program->programId(), "diffusetx"), 1);
+    program->setUniformValue("diffusetx", 1);
+    glActiveTexture(GL_TEXTURE0+2);
+    glBindTexture(GL_TEXTURE_2D,spectex); // spe
+    glUniform1i(glGetUniformLocation(program->programId(), "speculartx"), 2);
     program->setUniformValue("speculartx", 2);
-     glActiveTexture(GL_TEXTURE0+4);
+    glActiveTexture(GL_TEXTURE0+4);
     glBindTexture(GL_TEXTURE_2D,lighttex); // lite
     glUniform1i(glGetUniformLocation(program->programId(), "lighttx"), 4);
     program->setUniformValue("lighttx", 4);
@@ -146,63 +136,54 @@ glUniform1i(glGetUniformLocation(program->programId(), "speculartx"), 2);
     glUniform1i(glGetUniformLocation(program->programId(), "normaltx"), 3);
     program->setUniformValue("normaltx", 3);
 
-
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D,0); //diff
     for(uint i =0;i<rendermodes.size();i++){
-    // Tell OpenGL which VBOs to use
-  //  arrayBuf.bind();
-   // indexBuf.bind();
-      arrbuff.at(i).bind();
-      idxbuff.at(i).bind();
+        // Tell OpenGL which VBOs to use
+        // arrayBuf.bind();
+        // ndexBuf.bind();
+        arrbuff.at(i).bind();
+        idxbuff.at(i).bind();
 
+        // Offset for position
+        quintptr offset = 0;
 
-    // Offset for position
-    quintptr offset = 0;
+        // end messsing with stuff
+        //glPointSize(5.0f);
+        // Tell OpenGL programmable pipeline how to locate vertex position data
+        int vertexLocation = program->attributeLocation("a_position");
+        program->enableAttributeArray(vertexLocation);
+        glVertexAttribPointer(vertexLocation, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
 
-    // end messsing with stuff
-    //glPointSize(5.0f);
-    // Tell OpenGL programmable pipeline how to locate vertex position data
-    int vertexLocation = program->attributeLocation("a_position");
-    program->enableAttributeArray(vertexLocation);
-    glVertexAttribPointer(vertexLocation, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
+        // Offset for texture coordinate
+        offset += sizeof(QVector4D);
 
+        // Tell OpenGL programmable pipeline how to locate vertex normal coordinate data
+        int normals = program->attributeLocation("a_normals");
+        program->enableAttributeArray(normals);
+        glVertexAttribPointer(normals, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
 
-    // Offset for texture coordinate
-    offset += sizeof(QVector4D);
+        offset += sizeof(QVector4D);
 
-    // Tell OpenGL programmable pipeline how to locate vertex normal coordinate data
-    int normals = program->attributeLocation("a_normals");
-    program->enableAttributeArray(normals);
-    glVertexAttribPointer(normals, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
+        // end messsing with stuff
+        //glPointSize(5.0f);
+        // Tell OpenGL programmable pipeline how to locate vertex texture data
+        int texcoordLocation = program->attributeLocation("a_texcoord");
+        program->enableAttributeArray(texcoordLocation);
+        glVertexAttribPointer(texcoordLocation,  4, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
 
-
-
-
-    offset += sizeof(QVector4D);
-
-    // end messsing with stuff
-    //glPointSize(5.0f);
-    // Tell OpenGL programmable pipeline how to locate vertex texture data
-    int texcoordLocation = program->attributeLocation("a_texcoord");
-    program->enableAttributeArray(texcoordLocation);
-    glVertexAttribPointer(texcoordLocation,  4, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
-
-// Draw cube geometry using indices from VBO 1
-    switch(rendermode){
-      case 0:
-        glDrawElements(GL_TRIANGLES, faces.at(i).size(), GL_UNSIGNED_INT, 0);
-        break;
-      case 1:
-        glDrawElements(GL_TRIANGLE_STRIP, faces.at(i).size(), GL_UNSIGNED_INT, 0);
-        break;
-      default:
-    glDrawElements(GL_TRIANGLE_STRIP, faces.at(i).size(), GL_UNSIGNED_INT, 0);
-
+        // Draw cube geometry using indices from VBO 1
+        switch(rendermode){
+          case 0:
+            glDrawElements(GL_TRIANGLES, faces.at(i).size(), GL_UNSIGNED_INT, 0);
+            break;
+          case 1:
+            glDrawElements(GL_TRIANGLE_STRIP, faces.at(i).size(), GL_UNSIGNED_INT, 0);
+            break;
+          default:
+            glDrawElements(GL_TRIANGLE_STRIP, faces.at(i).size(), GL_UNSIGNED_INT, 0);
+            break;
+        }
     }
-
-  }
-
     }
 }
-//! [2]

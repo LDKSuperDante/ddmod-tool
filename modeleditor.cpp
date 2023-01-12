@@ -555,7 +555,7 @@ addDockWidget(Qt::RightDockWidgetArea,dock);
     this->setStatusBar(mStatusbar);
 
 // renderer connections
-    connect(this,SIGNAL(newTextures(QString)),r,SLOT(onNewTextures(QString)));
+    connect(this,SIGNAL(newTextures(const QImage&,const QImage&,const QImage&,const QImage&)),r,SLOT(onNewTextures(const QImage&,const QImage&,const QImage&,const QImage&)));
     connect(this,SIGNAL(NewMeshData(std::vector<int>&,std::vector<std::vector<VertexData> >&,std::vector<std::vector<uint> >&)),r,SLOT(onNewMesh(std::vector<int>&,std::vector<std::vector<VertexData> >&,std::vector<std::vector<uint> >&)));
     connect(this,SIGNAL(newMeshPartSelection(std::vector<int>&)),r,SLOT(onNewMeshselect(std::vector<int>&)));
 
@@ -600,49 +600,28 @@ void ModelEditor::open_file(QString fileName)
 
 // try to open textures as well
     int txcheck = fileName.lastIndexOf(QChar('.'));
-    if (txcheck > 0) {
-        QString tx= fileName.left(txcheck);
-        tx.append("_BM.dds");
-        // qDebug() <<tx;
-        const QPixmap pixmap(tx);
-        difflabel->setPixmap(pixmap);
-        // difflabel->show();
-        Texturestabs->addTab(diffscroll,"Diffuse");
-        // const QImage image = pixmap.toImage();
-        // qDebug() << (image.isNull() ? "QImage error" : "QImage ok");
+    QString tx = txcheck > 0 ? fileName.left(txcheck) : fileName;
 
-        tx = fileName.left(txcheck);
-        tx.append("_CMM.dds");
+    // qDebug() <<tx;
+    const QPixmap pixmap(tx + "_BM.dds");
+    difflabel->setPixmap(pixmap);
+    // difflabel->show();
+    Texturestabs->addTab(diffscroll,"Diffuse");
 
-        const QPixmap pixmap2(tx);
-        speclabel->setPixmap(pixmap2);
+    const QPixmap pixmap2(tx + "_CMM.dds");
+    speclabel->setPixmap(pixmap2);
+    // speclabel->show();
+    Texturestabs->addTab(specscroll,"Specular");
 
-        // const QImage image2 = pixmap2.toImage();
-        // qDebug() << (image2.isNull() ? "QImage error" : "QImage ok");
+    const QPixmap pixmap3(tx + "_NM.dds");
+    normlabel->setPixmap(pixmap3);
+    // normlabel->show();
+    Texturestabs->addTab(normscroll,"Normal");
 
-        // speclabel->show();
-        Texturestabs->addTab(specscroll,"Specular");
-        tx= fileName.left(txcheck);
-        tx.append("_NM.dds");
-
-        const QPixmap pixmap3(tx);
-        normlabel->setPixmap(pixmap3);
-
-        // const QImage image3 = pixmap3.toImage();
-        // qDebug() << (image3.isNull() ? "QImage error" : "QImage ok");
-        // normlabel->show();
-        Texturestabs->addTab(normscroll,"Normal");
-        tx= fileName.left(txcheck);
-        tx.append("_TM.dds");
-
-        const QPixmap pixmap4(tx);
-        litelabel->setPixmap(pixmap4);
-
-        // const QImage image4 = pixmap4.toImage();
-        // qDebug() << (image4.isNull() ? "QImage error" : "QImage ok");
-        // litelabel->show();
-        Texturestabs->addTab(litescroll,"Light");
-    }
+    const QPixmap pixmap4(tx + "_TM.dds");
+    litelabel->setPixmap(pixmap4);
+    // litelabel->show();
+    Texturestabs->addTab(litescroll,"Light");
 
 // clear old selection
     selection.clear();
@@ -697,7 +676,7 @@ void ModelEditor::open_file(QString fileName)
     }
 
 // file should have been opened emit file to renderer
-    emit this->newTextures(fileName);
+    emit this->newTextures(pixmap.toImage(), pixmap2.toImage(), pixmap3.toImage(), pixmap4.toImage());
 
     mProgressbar->setVisible(true);
     mProgressbar->setMaximum(Fsize);

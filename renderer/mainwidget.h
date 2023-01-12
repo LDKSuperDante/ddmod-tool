@@ -74,34 +74,42 @@ public:
 
     ~MainWidget();
 
-protected:
+private:
     std::vector<int> selectedmeshes;
-
     std::vector<int> rendermodes;
-
-    std::vector< std::vector< VertexData > > vertices;
-    std::vector< std::vector<unsigned int> > faces;
 
     // QTextEdit *console;
 
     int shadingmode;
     int rendermode;
+
+    QOpenGLFunctions_4_3_Core * m_pFunctions = nullptr;
+    float mousex, mousey;
+    int m_distExp;
+
+    QBasicTimer timer;
+
+    QOpenGLShaderProgram *program;
+    GeometryEngine * geometries;
+    GLuint tex[4];
+    TrackBall m_trackBall;
+
+    QMatrix4x4 projection;
+
+    QAction *cv1;
+    QAction *cv2;
+    QAction *cv3;
+    QAction *cv4;
+    QAction *cv5;
+
     void DeleteFunctions() {
         delete(m_pFunctions);
         m_pFunctions = nullptr;
         // qDebug() << "goodbye context!";
     }
 
-    QOpenGLFunctions_4_3_Core * m_pFunctions = nullptr;
-    float mousex, mousey;
-    float tp;
-    float dur;
-    int st,et,st2,et2,s1,s2,t1,t2;
     QPointF pixelPosToViewPos(const QPointF& p);
-    int m_lastTime;
-    int m_mouseEventTime;
-    int m_distExp;
-    int m_frame;
+
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
@@ -123,7 +131,7 @@ signals:
 public slots:
     void gldebugmsg(const QOpenGLDebugMessage &debugMessage);
     void addMainMenu(QMenu *menu);
-    void onNewTextures(QString fileName);
+    void onNewTextures(const QImage &diff, const QImage &spec, const QImage &norm, const QImage &light);
 
     void onNewMesh(std::vector<int> &rmodes, std::vector< std::vector< VertexData > > &arrverts, std::vector< std::vector<unsigned int> > &arrfaces);
     void onNewMeshselect(std::vector<int> &selection);
@@ -133,28 +141,6 @@ public slots:
     void setVertexShading();
     void setTriangleRendering();
     void setTriangleStripRendering();
-
-private:
-    QBasicTimer timer;
-
-    QOpenGLShaderProgram *program;
-    GeometryEngine * geometries;
-    float lh;
-    GLuint htex,btex,hantex,legtex;
-    TrackBall m_trackBall;
-
-    QMatrix4x4 projection;
-
-    QVector2D mousePressPosition;
-    QRgb *m_color;
-    QRgb cl_color;
-    QRgb cm_color;
-
-    QAction *cv1;
-    QAction *cv2;
-    QAction *cv3;
-    QAction *cv4;
-    QAction *cv5;
 };
 
 #endif // MAINWIDGET_H
