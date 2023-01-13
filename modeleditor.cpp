@@ -603,22 +603,28 @@ void ModelEditor::open_file(QString fileName)
     QString tx = txcheck > 0 ? fileName.left(txcheck) : fileName;
 
     // qDebug() <<tx;
-    const QPixmap pixmap(tx + "_BM.dds");
+    QPixmap pixmap(tx + "_BM.dds");
+    if (pixmap.isNull())
+        pixmap.load(tx + "_NUKI.dds");
+
     difflabel->setPixmap(pixmap);
     // difflabel->show();
     Texturestabs->addTab(diffscroll,"Diffuse");
 
-    const QPixmap pixmap2(tx + "_CMM.dds");
+    QPixmap pixmap2(tx + "_CMM.dds");
     speclabel->setPixmap(pixmap2);
     // speclabel->show();
     Texturestabs->addTab(specscroll,"Specular");
 
-    const QPixmap pixmap3(tx + "_NM.dds");
+    QPixmap pixmap3(tx + "_NM.dds");
+    if (pixmap3.isNull())
+        pixmap3.load(tx + "_NM_HQ.dds");
+
     normlabel->setPixmap(pixmap3);
     // normlabel->show();
     Texturestabs->addTab(normscroll,"Normal");
 
-    const QPixmap pixmap4(tx + "_TM.dds");
+    QPixmap pixmap4(tx + "_TM.dds");
     litelabel->setPixmap(pixmap4);
     // litelabel->show();
     Texturestabs->addTab(litescroll,"Light");
