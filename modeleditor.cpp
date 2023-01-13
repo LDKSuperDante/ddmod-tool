@@ -625,13 +625,7 @@ void ModelEditor::open_file(QString fileName)
 
 // clear old selection
     selection.clear();
-
     sel.clear();
-
-    if (sel.size() == 0) {
-        selection.push_back(-1);
-    }
-
     emit this->newMeshPartSelection(selection);
 
     FILE *Filep;
@@ -1941,7 +1935,7 @@ void ModelEditor::on_data_changed(QStandardItem */* itm */)
 void ModelEditor::on_mesh_part_selectionChanged(QItemSelection selected, QItemSelection deselected)
 {
     QModelIndexList indexes = selected.indexes();
-    QModelIndexList indexes2 =  deselected.indexes();
+    QModelIndexList indexes2 = deselected.indexes();
     QModelIndex index;
 
     foreach(index, indexes) {
@@ -1956,14 +1950,13 @@ void ModelEditor::on_mesh_part_selectionChanged(QItemSelection selected, QItemSe
         }
     }
 
+    QStandardItemModel* meshpartmodel = (QStandardItemModel*)((QTableView*)MeshPartstabs->widget(0))->model();
+
     selection.clear();
+    selection.resize(meshpartmodel->rowCount(), 0);
 
     for (const auto &entry: sel) {
-        selection.push_back(entry.first);
-    }
-
-    if (sel.size() == 0) {
-        selection.push_back(-1);
+        selection[entry.first]=1;
     }
 
     emit this->newMeshPartSelection(selection);

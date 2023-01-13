@@ -11,8 +11,7 @@ uniform sampler2D normaltx;
 uniform sampler2D lighttx;
 
 uniform float timer;
-uniform int selsize;
-uniform int selected_mesh_part[100];
+uniform bool selected_meshes[100];
 
 uniform vec3 LightDir;
 
@@ -30,16 +29,13 @@ void main()
 
     vec3 r = reflect(normalize(v_position.xyz), v_normal);
     float s = pow(clamp(dot(r, LightDir), 0, 1), 32);
-    vec3 spec = texture2D(speculartx, v_texcoord.st).xyz;
+    vec3 spec = texture2D(speculartx, v_texcoord.st).rgb;
 
     float l = clamp(dot(v_normal, LightDir), 0, 1) * 0.75 + 0.25;
     color = vec4(color.rgb * l + spec * s, 1.0);
 
-    for(int i=0;i<selsize;i++) {
-        if(v_texcoord.w == selected_mesh_part[i]) {
-            color.a = timer;
-            break;
-        }
+    if (selected_meshes[int(v_texcoord.w + 0.5)]) {
+        color.a = timer;
     }
 
     gl_FragColor = color;

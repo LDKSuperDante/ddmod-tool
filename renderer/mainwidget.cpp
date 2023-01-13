@@ -88,8 +88,9 @@ void MainWidget::mousePressEvent(QMouseEvent *event)
 void MainWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if (event->buttons() & Qt::RightButton){ //Qt::MidButton) {
-        mousex = float(event->x())/float(width());
-        mousey = float(event->y())/float(height());
+        float m = float(std::min(width(), height()));
+        mousex = float(event->x() * 2 - width()) / m;
+        mousey = float(event->y() * 2 - height()) / m;
     }
 
     if (event->buttons() & Qt::LeftButton){ //Qt::MidButton) {
@@ -460,7 +461,7 @@ void MainWidget::paintGL()
     matrix.rotate(m_trackBall.rotation());
 
     // light pos
-    QVector3D lightdir(mousex - 0.5f, 0.5f - mousey, 0.5f);
+    QVector3D lightdir(mousex, -mousey, 1.0f);
     lightdir.normalize();
 
     program->setUniformValue("LightDir",lightdir);
@@ -469,10 +470,7 @@ void MainWidget::paintGL()
     program->setUniformValue("mvp_matrix",projection * matrix);
     program->setUniformValue("mv_matrix",matrix);
 
-    if(selectedmeshes.size()>0){
-        program->setUniformValue("selsize",(int)selectedmeshes.size());
-        program->setUniformValueArray("selected_mesh_part",selectedmeshes.data(),selectedmeshes.size());
-    }
+    program->setUniformValueArray("selected_meshes",selectedmeshes.data(),selectedmeshes.size());
 
     float timer = (QTime::currentTime().msec() % 500) / 250.0f;
     if (timer > 1.0f) timer = 2.0f - timer;
