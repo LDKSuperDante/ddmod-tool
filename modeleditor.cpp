@@ -577,6 +577,7 @@ addDockWidget(Qt::RightDockWidgetArea,dock);
     blocktype[0x0CB68015]="4s4c4c4c";
     blocktype[0x14D40020]="3s1s4c4c4c2h2h";
     blocktype[0x5E7F202C]="3f4c4c2h2h";
+    blocktype[0x926FD02E]="3f4c4c2h2h4c";
     blocktype[0xA320C016]="4s8c8c4c";
     blocktype[0xA7D7D036]="3f4c2h";
     blocktype[0xA8FAB018]="3s1s4c4c2h";
@@ -2818,6 +2819,18 @@ void ModelEditor::entervaluestogui()
                 break;
 
               case 0x5E7F202C:
+                vert.setX(vtx[0].f32);
+                vert.setY(vtx[1].f32);
+                vert.setZ(vtx[2].f32);
+                norm.setX(vtx[3].u8-127);
+                norm.setY(vtx[4].u8-127);
+                norm.setZ(vtx[5].u8-127);
+                norm /= 127;
+                txu = half_to_float(vtx[11].u16);
+                txv = half_to_float(vtx[12].u16);
+                break;
+
+              case 0x926FD02E:
                 vert.setX(vtx[0].f32);
                 vert.setY(vtx[1].f32);
                 vert.setZ(vtx[2].f32);
