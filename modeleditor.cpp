@@ -612,6 +612,8 @@ void ModelEditor::open_file(QString fileName)
     Texturestabs->addTab(diffscroll,"Diffuse");
 
     QPixmap pixmap2(tx + "_CMM.dds");
+    if (pixmap2.isNull())
+        pixmap2.load(tx + "_MM.dds");
     speclabel->setPixmap(pixmap2);
     // speclabel->show();
     Texturestabs->addTab(specscroll,"Specular");
@@ -630,8 +632,8 @@ void ModelEditor::open_file(QString fileName)
     Texturestabs->addTab(litescroll,"Light");
 
 // clear old selection
-    selection.clear();
     sel.clear();
+    selection.assign(selection.size(), 0);
     emit this->newMeshPartSelection(selection);
 
     FILE *Filep;
@@ -1957,9 +1959,7 @@ void ModelEditor::on_mesh_part_selectionChanged(QItemSelection selected, QItemSe
     }
 
     QStandardItemModel* meshpartmodel = (QStandardItemModel*)((QTableView*)MeshPartstabs->widget(0))->model();
-
-    selection.clear();
-    selection.resize(meshpartmodel->rowCount(), 0);
+    selection.assign(meshpartmodel->rowCount(), 0);
 
     for (const auto &entry: sel) {
         selection[entry.first]=1;
