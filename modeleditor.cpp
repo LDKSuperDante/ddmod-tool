@@ -574,7 +574,7 @@ addDockWidget(Qt::RightDockWidgetArea,dock);
     //   cmbAddress->setCurrentIndex(0);
 
     // establish known blocktypes
-    blocktype[0x0CB68015]="4s4c4c2s";
+    blocktype[0x0CB68015]="4s4c4c4c";
     blocktype[0x14D40020]="3s1s4c4c4c2h2h";
     blocktype[0x5E7F202C]="3f4c4c2h2h";
     blocktype[0xA320C016]="4s8c8c4c";
@@ -2798,6 +2798,10 @@ void ModelEditor::entervaluestogui()
                 vert.setY(vtx[1].s16);
                 vert.setZ(vtx[2].s16);
                 vert /= 32767;
+                norm.setX(vtx[12].u8-127);
+                norm.setY(vtx[13].u8-127);
+                norm.setZ(vtx[14].u8-127);
+                norm /= 127;
                 break;
 
               case 0x14D40020:
@@ -2830,9 +2834,9 @@ void ModelEditor::entervaluestogui()
                 vert.setY(vtx[1].s16);
                 vert.setZ(vtx[2].s16);
                 vert /= 32767;
-                norm.setX(vtx[12].u8-127);
-                norm.setY(vtx[13].u8-127);
-                norm.setZ(vtx[14].u8-127);
+                norm.setX(vtx[20].u8-127);
+                norm.setY(vtx[21].u8-127);
+                norm.setZ(vtx[22].u8-127);
                 norm /= 127;
                 break;
 
