@@ -1,0 +1,66 @@
+
+name: new-release
+env:
+#  PATH:     "..\\QtStatic\\mingw81_64_static\\bin\\"
+  QT_VERSION: '5.15.1' 
+  QT_BIN_DIR: C:\QtStatic\mingw81_64_static\bin
+  QT5_BIN_DIR: C:\QtStatic\mingw81_64_static\bin
+  
+on:
+  push:
+    branches:
+    - main
+jobs:
+  build:
+    runs-on: windows-latest        
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: 'ddo_launcher'
+          
+      - name: Install correct version of mingw
+        run: |
+          choco uninstall mingw --force
+          choco uninstall strawberryperl --force
+      - uses: e-t-l/setup-mingw@patch-1
+        with:
+          platform: x64
+          version: 11.2.0.07112021
+          
+     # TODO: automate this somehow?
+      - name: Set paths to newly installed static Qt libraries
+        run: |
+         echo QT5_BIN_DIR=${{ env.QT5_BIN_DIR }} >> $env:GITHUB_ENV
+         
+      - name: Download static Qt build
+        run: Invoke-WebRequest https://github.com/alex290/qtStatic/releases/download/5.15.1/mingw81_64_static.zip -OutFile staticqt.zip
+      - name: Unzip static Qt build
+        run: |
+          Expand-Archive .\staticqt.zip -DestinationPath C:\QtStatic
+          tree C:\QtStatic /F
+          
+      - name: Create build directory
+        run: mkdir build
+      - name: Build
+        working-directory: .\build
+        run: |
+          C:\QtStatic\mingw81_64_static\bin\qmake.exe ..\ddo_launcher\DDMOD.pro -spec win32-g++ CONFIG+=release QMAKE_LFLAGS_RELEASE+=" -static -static-libgcc"
+          mingw32-make.exe -f Makefile qmake_all
+          mingw32-make.exe -j4 -f Makefile.Release
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: release-${GITHUB_SHA}
+          release_name: Release ${{ github.sha }}
+      - name: Upload binary
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build\release\DDO_Launcher.exe
+          asset_name: DDO_Launcher.exe
+          asset_content_type: application/vnd.microsoft.portable-executable
